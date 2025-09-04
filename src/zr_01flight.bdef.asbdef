@@ -1,0 +1,59 @@
+managed implementation in class ZBP_R_01FLIGHT unique;
+strict ( 2 );
+with draft;
+extensible;
+define behavior for ZR_01FLIGHT alias Flight
+persistent table z01flight
+extensible
+draft table z01flight_d
+etag master LocalLastChanged
+lock master total etag LastChanged
+authorization master ( global )
+
+{
+  field ( mandatory : create )
+  CarrierId,
+  ConnectionId,
+  FlightDate;
+
+  field ( readonly )
+  LocalLastChanged,
+  LastChanged,
+  CreatedBy,
+  PlaneTypeId,
+  ChangedBy;
+
+  field ( readonly : update )
+  CarrierId,
+  ConnectionId,
+  FlightDate;
+
+  create;
+  update;
+  delete;
+
+  validation validatePrice on save { create; field Price; }
+
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Edit;
+  draft action Resume;
+  draft determine action Prepare;
+
+  mapping for z01flight corresponding extensible
+    {
+      CarrierId        = carrier_id;
+      ConnectionId     = connection_id;
+      FlightDate       = flight_date;
+      Price            = price;
+      CurrencyCode     = currency_code;
+      PlaneTypeId      = plane_type_id;
+      SeatsMax         = seats_max;
+      SeatsOccupied    = seats_occupied;
+      LocalLastChanged = local_last_changed;
+      LastChanged      = last_changed;
+      CreatedBy        = created_by;
+      ChangedBy        = changed_by;
+    }
+
+}

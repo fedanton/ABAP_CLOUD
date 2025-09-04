@@ -1,0 +1,29 @@
+CLASS zcl_fac_apt_copy DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+    INTERFACES if_oo_adt_classrun.
+
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+ENDCLASS.
+
+
+
+CLASS ZCL_FAC_APT_COPY IMPLEMENTATION.
+
+
+  METHOD if_oo_adt_classrun~main.
+
+    DATA tt TYPE TABLE OF zfacflight.
+
+    SELECT FROM /dmo/flight FIELDS *
+        INTO CORRESPONDING FIELDS OF TABLE @tt.
+    LOOP AT tt INTO DATA(row).
+      INSERT zfacflighT FROM @row.
+    ENDLOOP.
+
+  ENDMETHOD.
+ENDCLASS.
